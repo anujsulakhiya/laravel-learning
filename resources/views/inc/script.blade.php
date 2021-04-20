@@ -6,11 +6,13 @@
 
 
  <script>
+     const CONTENT_WRAPPER = $('#content-wrapper');
+
      var last_loaded = null;
 
      function load_ajax_page(page_name = "/ajax/a") {
 
-         $('#content-wrapper').load(page_name);
+         CONTENT_WRAPPER.load(page_name);
      }
 
      function go_back() {
@@ -33,21 +35,23 @@
      }
 
      $(document).ready(function() {
-
          set_my_ajax_link_listner();
          load_ajax_page();
-
      });
 
-     const post_request = (element) => {
-         console.log(element);
-
-         $.post(url, function(){
-
-         });
- 
+     function post_request(element){
+        $.ajax({
+            url: element.action,
+            method: 'post',
+            data: $(element).serialize(),
+            success: (response) => {
+                CONTENT_WRAPPER.html(response);
+            },
+            error: () =>{
+                alert('Error From Server\n Try again after sometime');
+            }
+        });
+        return false;
      }
-    //  return false;
-    //  }
 
  </script>
