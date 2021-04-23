@@ -23,4 +23,24 @@ class PasswordController extends Controller
         return view('ajax.change_password')->with('success', 'yes');
 
     }
+
+    public function createbatch(Request $req)
+    {
+        $user = Auth::user();
+        $batchcount = Batch_detail::select('id')->where('creater_email', $user->email)->where('is_deleted', '0')->get()->count();
+
+        $validator = Validator::make($req->all(), [
+            'batch_name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+
+            return view('faculty.create_batch')->with('batchcount' , $batchcount)->with('user' , $user)->withErrors($validator);
+        }
+
+        dd($req->all());
+
+        return view('faculty.create_batch')->with('success', 'yes');
+    }
 }
+
