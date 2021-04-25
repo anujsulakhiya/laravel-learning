@@ -5,36 +5,42 @@
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 
- <script>
-     const CONTENT_WRAPPER = $('#content-wrapper');
+ <script>const CONTENT_WRAPPER = $('#mainpage');
 
-     var last_loaded = null;
+    var last_loaded = null;
 
-     function set_my_ajax_link_listner() {
-         $('.my_ajax_link').on('click', (e) => {
-             e.preventDefault();
-             const page_name = e.target.href;
-             load_ajax_page(page_name);
-             last_loaded = page_name;
-             //  console.log(last_loaded);
-         });
-     }
+    function set_my_ajax_link_listner() {
+        $('.my_ajax_link').on('click', (e) => {
+            e.preventDefault();
+            const page_name = e.target.href;
+            CONTENT_WRAPPER.load(page_name);
+            localStorage.setItem("last_loaded", page_name);
+            // alert(localStorage.getItem("last_loaded"));
+            // load_ajax_page(page_name);
+            // last_loaded = page_name;
+            //  console.log(last_loaded);
+        });
+    }
 
-     function load_ajax_page(page_name = "/ajax/a") {
-         CONTENT_WRAPPER.load(page_name, () => {
-                set_my_ajax_link_listner();
-         });
-     }
+    function set_my_ajax_link_in_mainpage() {
+        $('.my_mainpage_link').on('click', (e) => {
+            e.preventDefault();
+            const page_name = e.target.href;
+            CONTENT_WRAPPER.load(page_name);
+            localStorage.setItem("last_loaded", page_name);
+            // load_ajax_page(page_name);
+            // last_loaded = page_name;
+            //  console.log(last_loaded);
+        });
+    }
 
-     function go_back() {
-         console.log(1);
-         if (last_loaded == null) {
-             load_ajax_page();
-         } else {
-             load_ajax_page(last_loaded);
-         }
-     }
+    function load_ajax_page(page_name = "/home_page") {
 
+        page_name = localStorage.getItem("last_loaded");
+        CONTENT_WRAPPER.load(page_name, () => {
+            set_my_ajax_link_listner();
+        });
+    }
 
 
      $(document).ready(function() {
